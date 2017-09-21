@@ -1,239 +1,312 @@
 ---
-title: API Reference
+title: NBA Email API Payload Document
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
   - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
 
 search: true
 ---
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+This document only defines the payload format used by the Email API. 
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+It doesn't 
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+* Define how to implement the Email API
+* Define how to send this payload to API backend
+* Define how to implement the authentication
 
-# Authentication
+Also we use JavaScript language to show the payload format in this document
 
-> To authorize, use this code:
+# Terminology
 
-```ruby
-require 'kittn'
+This document uses a number of terms to refer to the roles played in the API.
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+* payload
 
-```python
-import kittn
+&nbsp;&nbsp;&nbsp;&nbsp;The message send to Email API backend
 
-api = kittn.authorize('meowmeowmeow')
-```
+* id
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+&nbsp;&nbsp;&nbsp;&nbsp;The unique id to identify the payload send to Email API backend
 
-```javascript
-const kittn = require('kittn');
+* authtoken
 
-let api = kittn.authorize('meowmeowmeow');
-```
+&nbsp;&nbsp;&nbsp;&nbsp;The authentication token used to authenticate the message call at server side
 
-> Make sure to replace `meowmeowmeow` with your API key.
+* type
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+&nbsp;&nbsp;&nbsp;&nbsp;Backend should use this field to determine the structure of data property
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+* data
 
-`Authorization: meowmeowmeow`
+&nbsp;&nbsp;&nbsp;&nbsp;The data contains in the payload which will be sent to Email API backend
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+* optional
 
-# Kittens
+&nbsp;&nbsp;&nbsp;&nbsp;If a data field is marked as optional. It means if the client side can't get the information, the whole filed will be omitted from the payload. For example, for purchase confirmation payload, the billing address for a customer is optional. So if the subscription doesn't require customer to input billing address, the the **billingaddress** field will be omitted from the payload.
 
-## Get All Kittens
+# API Payload definition
 
-```ruby
-require 'kittn'
+## Subscription Self Cancellation
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+This payload will be sent to Email API backend when customer's subscription has been cancelled automatically based on system.
 
 ```javascript
-const kittn = require('kittn');
+const request = require("request")
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+//this is the payload sent to backend
+const payload = {
+  "id": "**************",
+  "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
+  "type": "SUBSELFCANCEL",
+  "data": {
+    "user": {
+      "email": "test@me.com",
+      "firstname": "test"
+    },
+    "subscription":{
+      "name": "package name",
+      "sku": "package sku",
+      "resumable": false
+    }
   }
-]
+}
+
+const options = {
+  url: "http://example.com/api/email",
+  body: JSON.stringify(payload)
+}
+
+request(options, function (error, response, body){
+
+})
 ```
 
-This endpoint retrieves all kittens.
+## Pruchase Confirmation
 
-### HTTP Request
+This payload will be sent to Email API backend when customer have succesfully bough a service at platform.
 
-`GET http://example.com/api/kittens`
+In the payload
 
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+* billingaddress is optional
+* payment is optional
+* payment => method is optional, and the data included in method will be different for each payment type. In the code we only show the method for creditcard payment method
 
 ```javascript
-const kittn = require('kittn');
+const request = require("request")
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+//this is the payload sent to backend
+const payload = {
+  "id": "**************",
+  "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
+  "type": "PURCHASECONFIRM",
+  "data": {
+    "user": {
+      "email": "test@me.com",
+      "firstname": "test",
+      "billingaddress": {
+        "address1": "address1",
+        "address2": "address2",
+        "city": "city",
+        "state": "state",
+        "country": "country",
+        "postalcode": "postalcode"
+      },
+      "payment": {
+        "type": "creditcard",
+        "method": {
+          "cardnumber": "************5454",
+          "expire": "12/2022"
+        }
+      },
+      "order":{
+        "subscription": {
+          "name": "package name",
+          "sku": "package sku",
+          "freetrial": false,
+          "freetrialbilldate": "2017-09-25T04:00:00Z",
+        },
+        "discount": 12.00,
+        "subtotal": 12.00,
+        "tax": 10.00,
+        "total": 10.00
+      }
+    }
+  }
 }
+
+const options = {
+  url: "http://example.com/api/email",
+  body: JSON.stringify(payload)
+}
+
+request(options, function (error, response, body){
+
+})
 ```
 
-This endpoint retrieves a specific kitten.
+## Refund
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This message will be sent to Email API backend when customer get refund through platform.
 
-### HTTP Request
+In this payload 
 
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
+* payment => method will include different field based on the refund method used. In the code, we only show the data field if refund method is credit card.
 
 ```javascript
-const kittn = require('kittn');
+const request = require("request")
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
+//this is the payload sent to backend
+const payload = {
+  "id": "**************",
+  "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
+  "type": "PURCHASECONFIRM",
+  "data": {
+    "user": {
+      "email": "test@me.com",
+      "firstname": "test",
+      "payment": {
+        "method": {
+          "cardnumber": "************5454",
+          "expire": "12/2022"
+        }
+      },
+      "description": "refund reason"
+    }
+  }
 }
+
+const options = {
+  url: "http://example.com/api/email",
+  body: JSON.stringify(payload)
+}
+
+request(options, function (error, response, body){
+
+})
 ```
 
-This endpoint retrieves a specific kitten.
+## Free Trial Expiring
 
-### HTTP Request
+This message will be sent to Email API backend when customer's free trial subscription is going to be expired.
 
-`DELETE http://example.com/kittens/<ID>`
+```javascript
+const request = require("request")
 
-### URL Parameters
+//this is the payload sent to backend
+const payload = {
+  "id": "**************",
+  "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
+  "type": "PURCHASECONFIRM",
+  "data": {
+    "user": {
+      "email": "test@me.com",
+      "firstname": "test"
+    },
+    "subscription": {
+      "name": "package name",
+      "sku": "package sku",
+      "daysremaining": 3,
+      "nextbilldate": "2017-09-25T04:00:00Z",
+      "price": 10.00,
+      "tax": 10.00,
+      "total": 20.00
+    }
+  }
+}
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+const options = {
+  url: "http://example.com/api/email",
+  body: JSON.stringify(payload)
+}
 
+request(options, function (error, response, body){
+
+})
+```
+
+## Free Trial Billing Failure
+
+This message will be sent to Email API backend when customer's rolloing free trial subscription billing failed.
+
+```javascript
+const request = require("request")
+
+//this is the payload sent to backend
+const payload = {
+  "id": "**************",
+  "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
+  "type": "PURCHASECONFIRM",
+  "data": {
+    "user": {
+      "email": "test@me.com",
+      "firstname": "test"
+    },
+    "subscription": {
+      "name": "package name",
+      "sku": "package sku",
+      "attempt": 3,
+      "nextbilldate": "2017-09-25T04:00:00Z"
+    }
+  }
+}
+
+const options = {
+  url: "http://example.com/api/email",
+  body: JSON.stringify(payload)
+}
+
+request(options, function (error, response, body){
+
+})
+```
+
+## Free Trial Conversion
+
+This message will be sent to Email API backend when customer's rolling free trial subscription has been billed successfully and the free trial subscription is converted to a regular subscription.
+
+In this payload
+
+* payment => method will include different field based on the payment method used for the conversion. In the code, we only show the data field if payment method is credit card.
+
+```javascript
+const request = require("request")
+
+//this is the payload sent to backend
+const payload = {
+  "id": "**************",
+  "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
+  "type": "PURCHASECONFIRM",
+  "data": {
+    "user": {
+      "email": "test@me.com",
+      "firstname": "test"
+    },
+    "subscription": {
+      "name": "package name",
+      "sku": "package sku",
+      "price": 10.00,
+      "tax": 10.00,
+      "total": 20.00,
+      "payment": {
+        "method": {
+          "cardnumber": "************5454",
+          "expire": "12/2022"          
+        }
+      }
+      "nextbilldate": "2017-09-25T04:00:00Z"
+    }
+  }
+}
+
+const options = {
+  url: "http://example.com/api/email",
+  body: JSON.stringify(payload)
+}
+
+request(options, function (error, response, body){
+
+})
+```
