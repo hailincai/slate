@@ -162,7 +162,7 @@ const request = require("request")
 const payload = {
   "id": "**************",
   "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
-  "type": "PURCHASECONFIRM",
+  "type": "REFUND",
   "data": {
     "user": {
       "email": "test@me.com",
@@ -199,7 +199,7 @@ const request = require("request")
 const payload = {
   "id": "**************",
   "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
-  "type": "PURCHASECONFIRM",
+  "type": "FREETRIALEXPIRING",
   "data": {
     "user": {
       "email": "test@me.com",
@@ -238,7 +238,7 @@ const request = require("request")
 const payload = {
   "id": "**************",
   "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
-  "type": "PURCHASECONFIRM",
+  "type": "FREETRIALBILLFAIL",
   "data": {
     "user": {
       "email": "test@me.com",
@@ -278,7 +278,7 @@ const request = require("request")
 const payload = {
   "id": "**************",
   "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
-  "type": "PURCHASECONFIRM",
+  "type": "FREETRIALCONVERSION",
   "data": {
     "user": {
       "email": "test@me.com",
