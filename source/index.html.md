@@ -117,13 +117,13 @@ const payload = {
         "state": "state",
         "country": "country",
         "postalcode": "postalcode"
+      }
       },
       "payment": {
         "type": "creditcard",
         "method": {
           "cardnumber": "************5454",
           "expire": "12/2022"
-        }
       },
       "order":{
         "subscription": {
@@ -178,13 +178,13 @@ const payload = {
   "data": {
     "user": {
       "email": "test@me.com",
-      "firstname": "test",
+      "firstname": "test"
+      },
       "payment": {
         "method": {
           "cardnumber": "************5454",
           "expire": "12/2022"
-        }
-      },
+      },      
       "description": "refund reason"
     }
   }
@@ -314,18 +314,18 @@ const payload = {
       "email": "test@me.com",
       "firstname": "test"
     },
+    "payment": {
+      "method": {
+        "cardnumber": "************5454",
+        "expire": "12/2022"          
+      }
+    },
     "subscription": {
       "name": "package name",
       "sku": "package sku",
       "price": 10.00,
       "tax": 10.00,
       "total": 20.00,
-      "payment": {
-        "method": {
-          "cardnumber": "************5454",
-          "expire": "12/2022"          
-        }
-      }
       "nextbilldate": "2017-09-25T04:00:00Z"
     }
   }
