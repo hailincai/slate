@@ -305,31 +305,73 @@ const moment = require("moment")
 
 //this is the payload sent to backend
 const payload = {
-  "id": "**************",
-  "transactionDate": moment().unix(),
-  "authtoken": "E76Aw1LTULNStu1h84Wl7t1AuUoY3fVepVJHdve2mwyRWEsHpV83",
+  "id": "a88d8f40-78f1-3de2-319a-7dce7f000001",
+  "transactionDate": 1508842519,
   "type": "FREETRIALCONVERSION",
   "data": {
     "user": {
-      "email": "test@me.com",
-      "firstname": "test"
-    },
-    "payment": {
-      "method": {
-        "cardnumber": "************5454",
-        "expire": "12/2022"          
-      }
+      "email": "domas59@hotmail.com",
+      "firstname": "Nicholas"
     },
     "subscription": {
-      "name": "package name",
-      "sku": "package sku",
-      "price": 10.00,
-      "tax": 10.00,
-      "total": 20.00,
-      "nextbilldate": "2017-09-25T04:00:00Z"
+      "name": "NBA LEAGUE PASS: Regular Season + Playoffs Subscription",
+      "sku": "LPPMONTHLY",
+      "price": "AUD&#x0024;39.99",
+      "total": "AUD&#x0024;39.99",
+      "paymenttype": "Credit Card",
+      "cardtype": "MASTERCARD",
+      "cardnumber": "MasterCard XXXXXXXXXXXX6315"
     }
   }
 }
+
+/*
+Sample payload for VisaCard
+const payload = {
+  "id": "a9fe3640-78f1-3de2-b19b-916e7f000001",
+  "transactionDate": 1508842521,
+  "type": "FREETRIALCONVERSION",
+  "data": {
+    "user": {
+      "email": "chrislawry10@gmail.com",
+      "firstname": "Christopher"
+    },
+    "subscription": {
+      "name": "NBA LEAGUE PASS: Regular Season + Playoffs Subscription",
+      "sku": "LPPMONTHLY",
+      "price": "AUD&#x0024;39.99",
+      "total": "AUD&#x0024;39.99",
+      "paymenttype": "Credit Card",
+      "cardtype": "VISA",
+      "cardnumber": "Visa XXXXXXXXXXXX5048"
+    }
+  }
+}
+*/
+
+/*
+Sample payload for Ameircan Express
+const payload = {
+  "id": "a98dc130-78f1-3de2-ad92-dc917f000001",
+  "transactionDate": 1508842520,
+  "type": "FREETRIALCONVERSION",
+  "data": {
+    "user": {
+      "email": "tayloradams00@hotmail.com",
+      "firstname": "taylor"
+    },
+    "subscription": {
+      "name": "NBA LEAGUE PASS: Regular Season + Playoffs Subscription",
+      "sku": "LPPMONTHLY",
+      "price": "AUD&#x0024;39.99",
+      "total": "AUD&#x0024;39.99",
+      "paymenttype": "Credit Card",
+      "cardtype": "AMEX",
+      "cardnumber": "American Express XXXXXXXXXXX1005"
+    }
+  }
+}
+*/
 
 const options = {
   url: "http://example.com/api/email",
