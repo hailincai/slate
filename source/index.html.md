@@ -1,5 +1,5 @@
 ---
-title: NBA Email API Payload Document
+title:  Email API Payload Document
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - javascript
@@ -314,7 +314,7 @@ const payload = {
       "firstname": "Nicholas"
     },
     "subscription": {
-      "name": "NBA LEAGUE PASS: Regular Season + Playoffs Subscription",
+      "name": "LEAGUE PASS: Regular Season + Playoffs Subscription",
       "sku": "LPPMONTHLY",
       "price": "AUD&#x0024;39.99",
       "total": "AUD&#x0024;39.99",
@@ -337,7 +337,7 @@ const payload = {
       "firstname": "Christopher"
     },
     "subscription": {
-      "name": "NBA LEAGUE PASS: Regular Season + Playoffs Subscription",
+      "name": " LEAGUE PASS: Regular Season + Playoffs Subscription",
       "sku": "LPPMONTHLY",
       "price": "AUD&#x0024;39.99",
       "total": "AUD&#x0024;39.99",
@@ -361,7 +361,7 @@ const payload = {
       "firstname": "taylor"
     },
     "subscription": {
-      "name": "NBA LEAGUE PASS: Regular Season + Playoffs Subscription",
+      "name": " LEAGUE PASS: Regular Season + Playoffs Subscription",
       "sku": "LPPMONTHLY",
       "price": "AUD&#x0024;39.99",
       "total": "AUD&#x0024;39.99",
